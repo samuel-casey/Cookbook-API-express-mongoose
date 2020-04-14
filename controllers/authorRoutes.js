@@ -12,6 +12,9 @@ router.get('/:name', authorController.getAuthorsByName)
 router.post('/', authorController.createAuthor)
 // Write the route to update an author
 router.put('/:name', authorController.updateAuthor)
+
+//Write a route to delete an author
+router.delete('/:id', authorController.deleteAuthor)
 // Write the route to get all 
 router.get('/:id/cookbooks', authorController.getAuthorsWithCookbooks)
 
