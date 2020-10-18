@@ -1,4 +1,4 @@
-const mongoose = require('mongoose')
+import mongoose from 'mongoose'
 
 mongoose.connect('mongodb://localhost/cookbooks_db', { useNewUrlParser: true })
 
