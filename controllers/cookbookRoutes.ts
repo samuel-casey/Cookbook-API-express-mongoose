@@ -26,6 +26,14 @@ const create = (newCookbook: typeof ICookbook) => {
     return Cookbook.create({title: newCookbook.title, yearPublished: newCookbook.yearPublished})
 }
 
+const update = (title: string, newTitle: string) => {
+    return Cookbook.findOneAndUpdate({title: title}, { $set: {title: newTitle} }, {new: true, useFindAndModify: false})
+}
+
+const destroy = (title: string) => {
+    return Cookbook.findOneAndDelete({title: title}, { useFindAndModify: false})
+}
+
 // Write the route to list all cookbooks
 router.get('/', async (req: express.Request, res: express.Response) => {
     try {
@@ -86,10 +94,6 @@ router.get('/book/', async (req: express.Request, res: express.Response) => {
 })
 
 
-// router.get('/book/', async (req: express.Request, res: express.Response) => {
-  
-// })
-
 // Write the route to create a cookbook
 router.post('/', async (req: express.Request, res: express.Response) => {
     try {
@@ -106,9 +110,35 @@ router.post('/', async (req: express.Request, res: express.Response) => {
     }
 })
 
-// Write the route to update a cookbook
+// Write the route to update a cookbook (find by title)
+
+router.put('/books/:cookbookTitle', async (req: express.Request, res: express.Response) => {
+    try {
+        const updatedCookbook = await update(req.params.cookbookTitle, req.body.newTitle)
+        res.json({
+            status: 200,
+            message: "ok",
+            data: updatedCookbook
+        })
+    } catch (err) {
+        console.log(err)
+    }
+})
+
 
 // Write the route to delete the cookbook by title
+router.delete('/books/:cookbookTitle', async (req: express.Request, res: express.Response) => {
+    try {
+        const deletedCookbook = await destroy(req.params.cookbookTitle)
+        res.json({
+            status: 200,
+            message: "ok",
+            data: deletedCookbook
+        })
+    } catch (err) {
+        console.log(err)
+    }
+})
 
 
 module.exports = router;

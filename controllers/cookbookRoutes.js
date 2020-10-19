@@ -61,6 +61,12 @@ var show = function (cookbookTitle, yearPublished) {
 var create = function (newCookbook) {
     return Cookbook.create({ title: newCookbook.title, yearPublished: newCookbook.yearPublished });
 };
+var update = function (title, newTitle) {
+    return Cookbook.findOneAndUpdate({ title: title }, { $set: { title: newTitle } }, { "new": true, useFindAndModify: false });
+};
+var destroy = function (title) {
+    return Cookbook.findOneAndDelete({ title: title }, { useFindAndModify: false });
+};
 // Write the route to list all cookbooks
 router.get('/', function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
     var allCookbooks, err_1;
@@ -153,8 +159,6 @@ router.get('/book/', function (req, res) { return __awaiter(void 0, void 0, void
         }
     });
 }); });
-// router.get('/book/', async (req: express.Request, res: express.Response) => {
-// })
 // Write the route to create a cookbook
 router.post('/', function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
     var newCookbook, err_5;
@@ -181,6 +185,52 @@ router.post('/', function (req, res) { return __awaiter(void 0, void 0, void 0, 
         }
     });
 }); });
-// Write the route to update a cookbook
+// Write the route to update a cookbook (find by title)
+router.put('/books/:cookbookTitle', function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var updatedCookbook, err_6;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                _a.trys.push([0, 2, , 3]);
+                return [4 /*yield*/, update(req.params.cookbookTitle, req.body.newTitle)];
+            case 1:
+                updatedCookbook = _a.sent();
+                res.json({
+                    status: 200,
+                    message: "ok",
+                    data: updatedCookbook
+                });
+                return [3 /*break*/, 3];
+            case 2:
+                err_6 = _a.sent();
+                console.log(err_6);
+                return [3 /*break*/, 3];
+            case 3: return [2 /*return*/];
+        }
+    });
+}); });
 // Write the route to delete the cookbook by title
+router["delete"]('/books/:cookbookTitle', function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var deletedCookbook, err_7;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                _a.trys.push([0, 2, , 3]);
+                return [4 /*yield*/, destroy(req.params.cookbookTitle)];
+            case 1:
+                deletedCookbook = _a.sent();
+                res.json({
+                    status: 200,
+                    message: "ok",
+                    data: deletedCookbook
+                });
+                return [3 /*break*/, 3];
+            case 2:
+                err_7 = _a.sent();
+                console.log(err_7);
+                return [3 /*break*/, 3];
+            case 3: return [2 /*return*/];
+        }
+    });
+}); });
 module.exports = router;
