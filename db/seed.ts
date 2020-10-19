@@ -1,5 +1,6 @@
 const Author = require('../models/Author')
 const Cookbook = require('../models/Cookbook')
+import mongoose, {db} from './connection'
 import { Schema } from 'mongoose'
 import {IAuthor, ICookbook} from '../models/interfaces'
 
@@ -79,3 +80,5 @@ Author.find().deleteMany(()=> {
   })
 })
 })
+
+db.close()

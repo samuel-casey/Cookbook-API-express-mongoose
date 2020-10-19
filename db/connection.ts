@@ -7,7 +7,7 @@ const config = { useUnifiedTopology: true, useNewUrlParser: true };
 // connect
 mongoose.connect(mongoURI, config);
 // define db connection
-let db = mongoose.connection;
+export const db = mongoose.connection;
 
 // messages for connecting/disconnecting
 db.on('error', (err) => console.log(err.message + ' IS MONGOD RUNNING?'));
