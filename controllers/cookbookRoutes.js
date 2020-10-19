@@ -39,8 +39,12 @@ exports.__esModule = true;
 var express = require("express");
 var router = express.Router();
 var Cookbook = require('../models/Cookbook');
+// MONGO ACTIONS (HELPER FUNCTIONS FOR ROUTES)
 var index = function () {
     return Cookbook.find();
+};
+var show = function (cookbookTitle) {
+    return Cookbook.find({ title: cookbookTitle });
 };
 // Write the route to list all cookbooks
 router.get('/', function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
@@ -48,7 +52,7 @@ router.get('/', function (req, res) { return __awaiter(void 0, void 0, void 0, f
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
-                _a.trys.push([0, 2, 3, 4]);
+                _a.trys.push([0, 2, , 3]);
                 return [4 /*yield*/, index()];
             case 1:
                 allCookbooks = _a.sent();
@@ -58,17 +62,40 @@ router.get('/', function (req, res) { return __awaiter(void 0, void 0, void 0, f
                     data: allCookbooks
                 });
                 console.log(allCookbooks);
-                return [3 /*break*/, 4];
+                return [3 /*break*/, 3];
             case 2:
                 err_1 = _a.sent();
                 console.log(err_1);
-                return [3 /*break*/, 4];
-            case 3: return [7 /*endfinally*/];
-            case 4: return [2 /*return*/];
+                return [3 /*break*/, 3];
+            case 3: return [2 /*return*/];
         }
     });
 }); });
 // Write the route to get cookbook by title
+router.get('/:cookbookTitle', function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var cookbook, err_2;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                _a.trys.push([0, 2, , 3]);
+                return [4 /*yield*/, show(req.params.cookbookTitle)];
+            case 1:
+                cookbook = _a.sent();
+                res.json({
+                    status: 200,
+                    message: "ok",
+                    data: cookbook
+                });
+                console.log(cookbook);
+                return [3 /*break*/, 3];
+            case 2:
+                err_2 = _a.sent();
+                console.log(err_2);
+                return [3 /*break*/, 3];
+            case 3: return [2 /*return*/];
+        }
+    });
+}); });
 // Write the route to get cookbook by year published
 // Write the route to create a cookbook
 // Write the route to update a cookbook

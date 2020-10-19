@@ -60,13 +60,13 @@ Author.find().deleteMany(()=> {
       }).then((author: IAuthor) => {
       Promise.all([
         Cookbook.create({
-          title: 'Bobby Flay Fit',
+          title: 'bobby flay fit',
           yearPublished: 2018
         }).then((cookbook: {type: Schema.Types.ObjectId}) => {
           author.cookbooks.push(cookbook)
         }),
          Cookbook.create({
-          title: "Boy Gets Grill",
+          title: "boy gets grill",
           yearPublished: 2009
         })
         .then((cookbook: {type: Schema.Types.ObjectId}) => {

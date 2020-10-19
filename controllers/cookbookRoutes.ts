@@ -8,6 +8,10 @@ const index = () => {
     return Cookbook.find()
 }
 
+const show = (cookbookTitle: string) => {
+    return Cookbook.find({title: cookbookTitle})
+}
+
 // Write the route to list all cookbooks
 router.get('/', async (req: express.Request, res: express.Response) => {
     try {
@@ -20,12 +24,23 @@ router.get('/', async (req: express.Request, res: express.Response) => {
         console.log(allCookbooks)
     } catch (err) {
         console.log(err)
-    } finally {
     }
 })
 
 // Write the route to get cookbook by title
-router.get('/')
+router.get('/:cookbookTitle', async (req: express.Request, res: express.Response) => {
+       try {
+        const cookbook = await show(req.params.cookbookTitle)
+        res.json({
+            status: 200,
+            message: "ok",
+            data: cookbook
+        })
+        console.log(cookbook)
+    } catch (err) {
+        console.log(err)
+    }
+})
 
 // Write the route to get cookbook by year published
 
