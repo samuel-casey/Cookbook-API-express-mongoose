@@ -30,7 +30,7 @@ router.get('/', async (req: express.Request, res: express.Response) => {
 // Write the route to get cookbook by title
 router.get('/:cookbookTitle', async (req: express.Request, res: express.Response) => {
        try {
-        const cookbook = await show(req.params.cookbookTitle)
+        const cookbook = await show(req.params.cookbookTitle.toLowerCase())
         res.json({
             status: 200,
             message: "ok",
