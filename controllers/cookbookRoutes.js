@@ -46,8 +46,16 @@ var index = function () {
     return Cookbook.find();
 };
 // find cookbook by title
-var show = function (cookbookTitle) {
-    return Cookbook.find({ title: cookbookTitle });
+var show = function (cookbookTitle, yearPublished) {
+    if (cookbookTitle && yearPublished) {
+        return Cookbook.find({ title: cookbookTitle, yearPublished: yearPublished });
+    }
+    else if (cookbookTitle) {
+        return Cookbook.find({ title: cookbookTitle });
+    }
+    else {
+        return Cookbook.find({ yearPublished: yearPublished });
+    }
 };
 // post a new cookbook to the DB 
 var create = function (newCookbook) {
@@ -79,14 +87,19 @@ router.get('/', function (req, res) { return __awaiter(void 0, void 0, void 0, f
     });
 }); });
 // Write the route to get cookbook by title
-router.get('/:cookbookTitle', function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var cookbook, err_2;
+// Write the route to get cookbook by year published
+// ** this route returns the cookbook based on title AND/OR year depending on what's passed in the request body **
+router.get('/book/', function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var cookbook, err_2, cookbook, err_3, cookbook, err_4;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
-                _a.trys.push([0, 2, , 3]);
-                return [4 /*yield*/, show(req.params.cookbookTitle.toLowerCase())];
+                if (!(req.body.title && req.body.yearPublished === undefined)) return [3 /*break*/, 5];
+                _a.label = 1;
             case 1:
+                _a.trys.push([1, 3, , 4]);
+                return [4 /*yield*/, show(req.body.title.toLowerCase())];
+            case 2:
                 cookbook = _a.sent();
                 res.json({
                     status: 200,
@@ -94,18 +107,57 @@ router.get('/:cookbookTitle', function (req, res) { return __awaiter(void 0, voi
                     data: cookbook
                 });
                 console.log(cookbook);
-                return [3 /*break*/, 3];
-            case 2:
+                return [3 /*break*/, 4];
+            case 3:
                 err_2 = _a.sent();
                 console.log(err_2);
-                return [3 /*break*/, 3];
-            case 3: return [2 /*return*/];
+                return [3 /*break*/, 4];
+            case 4: return [3 /*break*/, 13];
+            case 5:
+                if (!(req.body.title === undefined && req.body.yearPublished)) return [3 /*break*/, 10];
+                _a.label = 6;
+            case 6:
+                _a.trys.push([6, 8, , 9]);
+                return [4 /*yield*/, show(req.body.title, req.body.yearPublished)];
+            case 7:
+                cookbook = _a.sent();
+                res.json({
+                    status: 200,
+                    message: "ok",
+                    data: cookbook
+                });
+                console.log(cookbook);
+                return [3 /*break*/, 9];
+            case 8:
+                err_3 = _a.sent();
+                console.log(err_3);
+                return [3 /*break*/, 9];
+            case 9: return [3 /*break*/, 13];
+            case 10:
+                _a.trys.push([10, 12, , 13]);
+                return [4 /*yield*/, show(undefined, req.body.yearPublished)];
+            case 11:
+                cookbook = _a.sent();
+                res.json({
+                    status: 200,
+                    message: "ok",
+                    data: cookbook
+                });
+                console.log(cookbook);
+                return [3 /*break*/, 13];
+            case 12:
+                err_4 = _a.sent();
+                console.log(err_4);
+                return [3 /*break*/, 13];
+            case 13: return [2 /*return*/];
         }
     });
 }); });
-// Write the route to get cookbook by year published
+// router.get('/book/', async (req: express.Request, res: express.Response) => {
+// })
+// Write the route to create a cookbook
 router.post('/', function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var newCookbook, err_3;
+    var newCookbook, err_5;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
@@ -122,14 +174,13 @@ router.post('/', function (req, res) { return __awaiter(void 0, void 0, void 0, 
                 console.log(newCookbook);
                 return [3 /*break*/, 3];
             case 2:
-                err_3 = _a.sent();
-                console.log(err_3);
+                err_5 = _a.sent();
+                console.log(err_5);
                 return [3 /*break*/, 3];
             case 3: return [2 /*return*/];
         }
     });
 }); });
-// Write the route to create a cookbook
 // Write the route to update a cookbook
 // Write the route to delete the cookbook by title
 module.exports = router;

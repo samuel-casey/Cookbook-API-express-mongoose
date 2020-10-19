@@ -11,8 +11,14 @@ const index = () => {
 }
 
 // find cookbook by title
-const show = (cookbookTitle: string) => {
-    return Cookbook.find({title: cookbookTitle})
+const show = (cookbookTitle?: string, yearPublished?: number) => {
+    if (cookbookTitle && yearPublished) {
+        return Cookbook.find({title: cookbookTitle, yearPublished: yearPublished})
+    } else if (cookbookTitle) {
+        return Cookbook.find({title: cookbookTitle})
+    } else {
+        return Cookbook.find({yearPublished: yearPublished})
+    }
 }
 
 // post a new cookbook to the DB 
@@ -35,10 +41,14 @@ router.get('/', async (req: express.Request, res: express.Response) => {
     }
 })
 
+
 // Write the route to get cookbook by title
-router.get('/:cookbookTitle', async (req: express.Request, res: express.Response) => {
-       try {
-        const cookbook = await show(req.params.cookbookTitle.toLowerCase())
+// Write the route to get cookbook by year published
+// ** this route returns the cookbook based on title AND/OR year depending on what's passed in the request body **
+router.get('/book/', async (req: express.Request, res: express.Response) => {
+    if (req.body.title && req.body.yearPublished === undefined) {
+    try {
+        const cookbook = await show(req.body.title.toLowerCase())
         res.json({
             status: 200,
             message: "ok",
@@ -48,9 +58,39 @@ router.get('/:cookbookTitle', async (req: express.Request, res: express.Response
     } catch (err) {
         console.log(err)
     }
+    } else if (req.body.title === undefined && req.body.yearPublished) {
+        try {
+            const cookbook = await show(req.body.title, req.body.yearPublished)
+            res.json({
+                status: 200,
+                message: "ok",
+                data: cookbook
+            })
+            console.log(cookbook)
+        } catch (err) {
+            console.log(err)
+        }
+    } else {
+        try {
+            const cookbook = await show(undefined, req.body.yearPublished)
+            res.json({
+                status: 200,
+                message: "ok",
+                data: cookbook
+            })
+            console.log(cookbook)
+        } catch (err) {
+            console.log(err)
+        }
+    }
 })
 
-// Write the route to get cookbook by year published
+
+// router.get('/book/', async (req: express.Request, res: express.Response) => {
+  
+// })
+
+// Write the route to create a cookbook
 router.post('/', async (req: express.Request, res: express.Response) => {
     try {
         console.log(req.body)
@@ -65,8 +105,6 @@ router.post('/', async (req: express.Request, res: express.Response) => {
         console.log(err)
     }
 })
-
-// Write the route to create a cookbook
 
 // Write the route to update a cookbook
 
