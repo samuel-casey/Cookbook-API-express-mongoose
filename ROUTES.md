@@ -6,3 +6,5 @@
 | /cookbooks/books/:cookbookTitle | PUT           |    update            | update a cookbook's title (find by title)  |
 | /cookbooks/books/:cookbookTitle | DELETE        |    destroy            | destroy a single (find by title) |
 | /authors/ | GET       |    index           | get all authors |
+| /authors/:firstName | GET       |    show          | get one author by first name|
+| /authors/ | GET       |    create          | create a new author (without list of cookbooks) |
