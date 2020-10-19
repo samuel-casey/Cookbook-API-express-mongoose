@@ -61,9 +61,11 @@ var show = function (cookbookTitle, yearPublished) {
 var create = function (newCookbook) {
     return Cookbook.create({ title: newCookbook.title, yearPublished: newCookbook.yearPublished });
 };
+// update a cookbook by title
 var update = function (title, newTitle) {
     return Cookbook.findOneAndUpdate({ title: title }, { $set: { title: newTitle } }, { "new": true, useFindAndModify: false });
 };
+// destroy a cookbook by title
 var destroy = function (title) {
     return Cookbook.findOneAndDelete({ title: title }, { useFindAndModify: false });
 };

@@ -9,14 +9,14 @@ import bodyParser = require('body-parser')
 const app = express()
 
 const cookbookRouter: express.Router = require('./controllers/cookbookRoutes')
-// const authorRouter = require('./controllers/authorRoutes')
+const authorRouter = require('./controllers/authorRoutes')
 
 // 2. Add the coded needed to make body-parser work within your app.
 app.use(bodyParser.urlencoded({
   extended: true
 }));
 app.use('/api/cookbooks/', cookbookRouter)
-// app.use('/api/authors/', authorRouter)
+app.use('/api/authors/', authorRouter)
 
 app.get('/', (req: express.Request, res: express.Response) => {
     res.send('Hello world of TypeScript + Node!')

@@ -26,10 +26,12 @@ const create = (newCookbook: typeof ICookbook) => {
     return Cookbook.create({title: newCookbook.title, yearPublished: newCookbook.yearPublished})
 }
 
+// update a cookbook by title
 const update = (title: string, newTitle: string) => {
     return Cookbook.findOneAndUpdate({title: title}, { $set: {title: newTitle} }, {new: true, useFindAndModify: false})
 }
 
+// destroy a cookbook by title
 const destroy = (title: string) => {
     return Cookbook.findOneAndDelete({title: title}, { useFindAndModify: false})
 }
