@@ -39,12 +39,19 @@ exports.__esModule = true;
 var express = require("express");
 var router = express.Router();
 var Cookbook = require('../models/Cookbook');
+var ICookbook = require('../models/interfaces').ICookbook;
 // MONGO ACTIONS (HELPER FUNCTIONS FOR ROUTES)
+// find all cookbooks
 var index = function () {
     return Cookbook.find();
 };
+// find cookbook by title
 var show = function (cookbookTitle) {
     return Cookbook.find({ title: cookbookTitle });
+};
+// post a new cookbook to the DB 
+var create = function (newCookbook) {
+    return Cookbook.create({ title: newCookbook.title, yearPublished: newCookbook.yearPublished });
 };
 // Write the route to list all cookbooks
 router.get('/', function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
@@ -78,7 +85,7 @@ router.get('/:cookbookTitle', function (req, res) { return __awaiter(void 0, voi
         switch (_a.label) {
             case 0:
                 _a.trys.push([0, 2, , 3]);
-                return [4 /*yield*/, show(req.params.cookbookTitle)];
+                return [4 /*yield*/, show(req.params.cookbookTitle.toLowerCase())];
             case 1:
                 cookbook = _a.sent();
                 res.json({
@@ -97,6 +104,31 @@ router.get('/:cookbookTitle', function (req, res) { return __awaiter(void 0, voi
     });
 }); });
 // Write the route to get cookbook by year published
+router.post('/', function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var newCookbook, err_3;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                _a.trys.push([0, 2, , 3]);
+                console.log(req.body);
+                return [4 /*yield*/, create(req.body)];
+            case 1:
+                newCookbook = _a.sent();
+                res.json({
+                    status: 200,
+                    message: "ok",
+                    data: newCookbook
+                });
+                console.log(newCookbook);
+                return [3 /*break*/, 3];
+            case 2:
+                err_3 = _a.sent();
+                console.log(err_3);
+                return [3 /*break*/, 3];
+            case 3: return [2 /*return*/];
+        }
+    });
+}); });
 // Write the route to create a cookbook
 // Write the route to update a cookbook
 // Write the route to delete the cookbook by title

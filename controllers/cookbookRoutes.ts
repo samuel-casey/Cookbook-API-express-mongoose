@@ -1,15 +1,23 @@
 import express = require("express");
-const router = express.Router();
+const router: express.Router = express.Router();
 const Cookbook = require('../models/Cookbook');
+const {ICookbook} = require('../models/interfaces')
 
 // MONGO ACTIONS (HELPER FUNCTIONS FOR ROUTES)
 
+// find all cookbooks
 const index = () => {
     return Cookbook.find()
 }
 
+// find cookbook by title
 const show = (cookbookTitle: string) => {
     return Cookbook.find({title: cookbookTitle})
+}
+
+// post a new cookbook to the DB 
+const create = (newCookbook: typeof ICookbook) => {
+    return Cookbook.create({title: newCookbook.title, yearPublished: newCookbook.yearPublished})
 }
 
 // Write the route to list all cookbooks
@@ -43,6 +51,20 @@ router.get('/:cookbookTitle', async (req: express.Request, res: express.Response
 })
 
 // Write the route to get cookbook by year published
+router.post('/', async (req: express.Request, res: express.Response) => {
+    try {
+        console.log(req.body)
+        const newCookbook = await create(req.body)
+        res.json({
+            status: 200,
+            message: "ok",
+            data: newCookbook
+        })
+        console.log(newCookbook)
+    } catch (err) {
+        console.log(err)
+    }
+})
 
 // Write the route to create a cookbook
 

@@ -10,7 +10,9 @@ var app = express();
 var cookbookRouter = require('./controllers/cookbookRoutes');
 // const authorRouter = require('./controllers/authorRoutes')
 // 2. Add the coded needed to make body-parser work within your app.
-app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({
+    extended: true
+}));
 app.use('/api/cookbooks/', cookbookRouter);
 // app.use('/api/authors/', authorRouter)
 app.get('/', function (req, res) {
