@@ -2,6 +2,7 @@
 exports.__esModule = true;
 var express = require("express");
 var dotenv = require("dotenv");
+var morgan = require('morgan');
 dotenv.config();
 var PORT = process.env.PORT || 3000;
 // 1. Require body-parser and save it to the variable parser.
@@ -10,9 +11,11 @@ var app = express();
 var cookbookRouter = require('./controllers/cookbookRoutes');
 var authorRouter = require('./controllers/authorRoutes');
 // 2. Add the coded needed to make body-parser work within your app.
+app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
     extended: true
 }));
+app.use(morgan('dev'));
 app.use('/api/cookbooks/', cookbookRouter);
 app.use('/api/authors/', authorRouter);
 app.get('/', function (req, res) {
