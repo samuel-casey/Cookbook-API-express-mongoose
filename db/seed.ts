@@ -5,7 +5,7 @@ import { Schema } from 'mongoose'
 import {IAuthor, ICookbook} from '../models/interfaces'
 
 Author.find().deleteMany(()=> {
-  Cookbook.find().deleteMany(() => {
+  Cookbook.find({}).deleteMany({}, () => {
     let meera = Author.create({
       firstName: 'meera',
       lastName: 'sodha'
@@ -53,32 +53,24 @@ Author.find().deleteMany(()=> {
         }).then((cookbook: {type: Schema.Types.ObjectId}) => {
           author.cookbooks.push(cookbook)
         })
-      ])
-      let bFlay= Author.create({
-      firstName: 'Bobby',
-      lastName: 'Flay'
-      }).then((author: IAuthor) => {
-      Promise.all([
-        Cookbook.create({
-          title: 'bobby flay fit',
-          yearPublished: 2018
-        }).then((cookbook: {type: Schema.Types.ObjectId}) => {
-          author.cookbooks.push(cookbook)
-        }),
-         Cookbook.create({
-          title: "boy gets grill",
-          yearPublished: 2009
-        })
-        .then((cookbook: {type: Schema.Types.ObjectId}) => {
-          author.cookbooks.push(cookbook)
-        })
-      ])
-      .then(() => {
+      ]).then(() => {
         author.save()
       })
-    }).catch((error: Error )=> console.log(error))
-  })
+    })
+      let bobby = Author.create({
+      firstName: 'bobby',
+      lastName: 'flay'
+    }).then((author: IAuthor) => {
+      Promise.all([
+        Cookbook.create({
+          title: 'boy meets grill',
+          yearPublished: 2007
+        }).then((cookbook: {type: Schema.Types.ObjectId}) => {
+          author.cookbooks.push(cookbook)
+        })
+      ]).then(() => {
+        author.save()
+      })
+    })
 })
 })
-
-db.close()

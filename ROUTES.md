@@ -8,5 +8,6 @@
 | /authors/ | GET       |    index           | get all authors |
 | /authors/author/:firstName | GET       |    show          | get one author by first name|
 | /authors/author/ | POST       |    create          | create a new author (without list of cookbooks) |
-| /authors/author/:id | POST       |    update         | update an author by id |
-| /authors/author/:id | POST       |    update         | update an author by id |
+| /authors/author/:id | PUT       |    update         | update an author by id |
+| /authors/author/:id | DELETE       |    destroy        | destroy an author by id |
+| /authors/author/:id/cookbooks | GET       |    getBooks        | find an author by ID and get their cookbooks |

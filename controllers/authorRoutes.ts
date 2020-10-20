@@ -9,7 +9,7 @@ const {IAuthor} = require('../models/interfaces')
 
 // find all cookbooks
 const index = () => {
-    return Author.find({}).populate('Cookbook')
+    return Author.find({})
 }
 
 // find cookbook by title
@@ -34,6 +34,9 @@ const destroy = (id: string) => {
 }
 
 // Write the route to list all authors and the id of their cookbooks
+const getBooks = (id: string) => {
+    return Author.find({_id: id}).populate("cookbooks")
+}
 
 router.get('/', async (req: express.Request, res: express.Response) => {
     try {
@@ -79,7 +82,7 @@ router.post('/author/', async (req: express.Request, res: express.Response) => {
 // Write the route to update an author
 router.put('/author/:id', async (req: express.Request, res: express.Response) => {
       try {
-        const newAuthor = await destroy(req.params.id, req.body)
+        const newAuthor = await update(req.params.id, req.body)
         res.json({
             status: 200,
             message: "ok",
@@ -105,6 +108,19 @@ router.delete('/author/:id', async (req: express.Request, res: express.Response)
 })
 
 // Write the route to get all cookbooks of an author
+router.get('/author/:id/cookbooks', async (req: express.Request, res: express.Response) => {
+    try {
+        console.log(req.params.id)
+        const cookbooks = await getBooks(req.params.id).populate('cookbooks')
+        res.json({
+            status: 200,
+            message: "ok",
+            data: cookbooks
+        })
+    } catch (err) {
+
+    }
+})
 
 
 module.exports = router

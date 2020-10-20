@@ -44,7 +44,7 @@ var IAuthor = require('../models/interfaces').IAuthor;
 // MONGO ACTIONS (HELPER FUNCTIONS FOR ROUTES)
 // find all cookbooks
 var index = function () {
-    return Author.find({}).populate('Cookbook');
+    return Author.find({});
 };
 // find cookbook by title
 var show = function (firstName) {
@@ -56,10 +56,16 @@ var create = function (newAuthor) {
 };
 // update an author by id
 var update = function (id, newData) {
-    console.log(newData.firstName);
     return Author.findByIdAndUpdate({ _id: id }, { $set: { firstName: newData.firstName, lastName: newData.lastName } }, { "new": true, useFindAndModify: false });
 };
+// find author by ID and delete
+var destroy = function (id) {
+    return Author.findByIdAndDelete({ _id: id });
+};
 // Write the route to list all authors and the id of their cookbooks
+var getBooks = function (id) {
+    return Author.find({ _id: id }).populate("cookbooks");
+};
 router.get('/', function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
     var authors, err_1;
     return __generator(this, function (_a) {
@@ -138,7 +144,6 @@ router.put('/author/:id', function (req, res) { return __awaiter(void 0, void 0,
         switch (_a.label) {
             case 0:
                 _a.trys.push([0, 2, , 3]);
-                console.log(typeof req.params.id);
                 return [4 /*yield*/, update(req.params.id, req.body)];
             case 1:
                 newAuthor = _a.sent();
@@ -157,5 +162,51 @@ router.put('/author/:id', function (req, res) { return __awaiter(void 0, void 0,
     });
 }); });
 //Write a route to delete an author
+router["delete"]('/author/:id', function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var deletedAuthor, err_5;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                _a.trys.push([0, 2, , 3]);
+                return [4 /*yield*/, destroy(req.params.id)];
+            case 1:
+                deletedAuthor = _a.sent();
+                res.json({
+                    status: 200,
+                    message: "ok",
+                    data: deletedAuthor
+                });
+                return [3 /*break*/, 3];
+            case 2:
+                err_5 = _a.sent();
+                console.log(err_5);
+                return [3 /*break*/, 3];
+            case 3: return [2 /*return*/];
+        }
+    });
+}); });
 // Write the route to get all cookbooks of an author
+router.get('/author/:id/cookbooks', function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var cookbooks, err_6;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                _a.trys.push([0, 2, , 3]);
+                console.log(req.params.id);
+                return [4 /*yield*/, getBooks(req.params.id).populate('cookbooks')];
+            case 1:
+                cookbooks = _a.sent();
+                res.json({
+                    status: 200,
+                    message: "ok",
+                    data: cookbooks
+                });
+                return [3 /*break*/, 3];
+            case 2:
+                err_6 = _a.sent();
+                return [3 /*break*/, 3];
+            case 3: return [2 /*return*/];
+        }
+    });
+}); });
 module.exports = router;
